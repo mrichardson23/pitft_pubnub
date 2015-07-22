@@ -30,11 +30,11 @@ def display(message):
 	#black background:
 	d.rectangle([0,0,240,320], fill=(0,0,0))
 
-	lines = textwrap.wrap(message, width=25)
+	lines = textwrap.wrap(message, width=22)
 	y = 0
 	for line in lines:
 		d.text((10,y), line, font=fnt, fill=(255,255,255))
-		y = y+20
+		y = y+22
 
 	canvas = canvas.rotate(90)
 	canvas.save("/tmp/test.png")
