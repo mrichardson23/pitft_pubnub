@@ -46,20 +46,15 @@ def error(message):
 	display("ERROR : " + str(message), color=(255,0,0))
   
 def connect(message):
-	display("Conencted.", color=(0,255,0))
+	display("Connected.", color=(0,255,0))
   
 def reconnect(message):
-	print("RECONNECTED")
-  
-  
-def disconnect(message):
-	print("DISCONNECTED")
+	display("Reconnected.", color=(0,255,0))
 
-canvas = Image.new('RGBA', (240,320), (255,255,255,0))
-d = ImageDraw.Draw(canvas)
+def disconnect(message):
+	display("Disconnected.", color=(255,0,0))
 
 display("Connecting...", color=(255,128,0))
-  
 pubnub.subscribe(channels='display', callback=callback, error=callback, connect=connect, reconnect=reconnect, disconnect=disconnect)
 
 while True:
