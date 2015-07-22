@@ -6,26 +6,35 @@ import RPi.GPIO as GPIO
 from time import sleep
 from pubnub import Pubnub
 import credentials
+import textwrap
 
 buttonA = 17
 buttonB = 22
 buttonC = 23
 buttonD = 27
 
+w = 240
+h = 321
+
 GPIO.setmode(GPIO.BCM)
 GPIO.setup(buttonA, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 GPIO.setup(buttonB, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 GPIO.setup(buttonC, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 GPIO.setup(buttonD, GPIO.IN, pull_up_down=GPIO.PUD_UP)
-fnt = ImageFont.truetype('/usr/share/fonts/truetype/roboto/Roboto-Medium.ttf', 30)
+fnt = ImageFont.truetype('/usr/share/fonts/truetype/roboto/Roboto-Medium.ttf', 20)
 
 def display(message):
-	canvas = Image.new('RGBA', (240,320), (255,255,255,0))
+	canvas = Image.new('RGBA', (w,h), (255,255,255,0))
 	d = ImageDraw.Draw(canvas)
 
 	#black background:
 	d.rectangle([0,0,240,320], fill=(0,0,0))
-	d.text((10,5), message, font=fnt, fill=(255,255,255))
+
+	lines = textwrap.wrap(message, width=25)
+	y = 0
+	for line in lines:
+		d.text((10,y), line, font=fnt, fill=(255,255,255))
+		y = y+20
 
 	canvas = canvas.rotate(90)
 	canvas.save("/tmp/test.png")
