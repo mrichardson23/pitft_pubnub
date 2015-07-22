@@ -46,7 +46,7 @@ def error(message):
 	display("ERROR : " + str(message), color=(255,0,0))
   
 def connect(message):
-	display("Conencted.")
+	display("Conencted.", color=(0,255,0))
   
 def reconnect(message):
 	print("RECONNECTED")
@@ -58,16 +58,18 @@ def disconnect(message):
 canvas = Image.new('RGBA', (240,320), (255,255,255,0))
 d = ImageDraw.Draw(canvas)
 
-#black background:
-d.rectangle([0,0,240,320], fill=(0,0,0))
-d.text((10,5), "Connecting...", font=fnt, fill=(255,255,255))
-
-canvas = canvas.rotate(90)
-canvas.save("/tmp/test.png")
-os.system('sudo fbi -T 2 -d /dev/fb1 -noverbose /tmp/test.png')
+display("Connecting...", color=(255,128,0))
   
 pubnub.subscribe(channels='display', callback=callback, error=callback, connect=connect, reconnect=reconnect, disconnect=disconnect)
 
 while True:
-	pass
+	if(GPIO.input(buttonD) == False):
+		try:
+			s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+			s.connect(('8.8.8.8', 0))
+			local_ip_address = s.getsockname()[0]
+		except:
+			local_ip_address = "No IP"
+		display(local_ip_address)
+		sleep(1)
 
