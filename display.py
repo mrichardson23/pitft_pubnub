@@ -23,17 +23,14 @@ GPIO.setup(buttonC, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 GPIO.setup(buttonD, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 fnt = ImageFont.truetype('/usr/share/fonts/truetype/roboto/Roboto-Medium.ttf', 20)
 
-def display(message):
-	canvas = Image.new('RGBA', (w,h), (255,255,255,0))
+def display(message, color=(255,255,255)):
+	canvas = Image.new('RGBA', (w,h), (0,0,0))
 	d = ImageDraw.Draw(canvas)
-
-	#black background:
-	d.rectangle([0,0,240,320], fill=(0,0,0))
 
 	lines = textwrap.wrap(message, width=22)
 	y = 0
 	for line in lines:
-		d.text((10,y), line, font=fnt, fill=(255,255,255))
+		d.text((10,y), line, font=fnt, fill=color)
 		y = y+22
 
 	canvas = canvas.rotate(90)
@@ -46,7 +43,7 @@ def callback(message, channel):
 	display(message['text'])
   
 def error(message):
-	display("ERROR : " + str(message))
+	display("ERROR : " + str(message), color=(255,0,0))
   
 def connect(message):
 	display("Conencted.")
