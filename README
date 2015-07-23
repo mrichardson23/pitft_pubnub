@@ -5,6 +5,7 @@ curl -SLs https://apt.adafruit.com/add | sudo bash
 sudo apt-get install raspberrypi-bootloader
 sudo apt-get install adafruit-pitft-helper
 
-sudo apt-get install python-pip python-dev
+sudo apt-get install python-pip python-dev libjpeg-dev
+
 
 sudo pip install pubnub pillow

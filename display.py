@@ -7,6 +7,8 @@ from time import sleep
 from pubnub import Pubnub
 import credentials
 import textwrap
+import urllib
+import cStringIO
 
 buttonA = 17
 buttonB = 22
@@ -37,10 +39,20 @@ def display(message, color=(255,255,255)):
 	canvas.save("/tmp/test.png")
 	os.system('sudo fbi -T 2 -d /dev/fb1 -noverbose /tmp/test.png')
 
+def displayImage(url):
+	file = cStringIO.StringIO(urllib.urlopen(url).read())
+	img = Image.open(file)
+	img = img.rotate(90)
+	img.save("/tmp/test.png")
+	os.system('sudo fbi -T 2 -a -d /dev/fb1 -noverbose /tmp/test.png')
+
 pubnub = Pubnub(publish_key=credentials.PUBLISH_KEY, subscribe_key=credentials.SUBSCRIBE_KEY)
 
 def callback(message, channel):
-	display(message['text'])
+	if 'text' in message.keys():
+		display(message['text'])
+	if 'imageurl' in message.keys():
+		displayImage(message['imageurl'])
   
 def error(message):
 	display("ERROR : " + str(message), color=(255,0,0))
@@ -67,4 +79,5 @@ while True:
 			local_ip_address = "No IP"
 		display(local_ip_address)
 		sleep(1)
+	sleep(.1)
 
